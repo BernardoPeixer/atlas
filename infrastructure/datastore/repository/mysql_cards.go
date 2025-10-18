@@ -25,5 +25,14 @@ func NewCardsRepository(
 func (c cardRepository) ListAllCards(
 	ctx context.Context,
 ) error {
-	return nil
+	// language=sql
+	query := `
+	SELECT fc.id,
+	       fc.balance,
+	       fc.crypto_price,
+	       c.name,
+	       c.symbol,
+	       fc.status_code
+	FROM festival_cards fc INNER JOIN cryptos c ON c.id = fc.id_crypto_type
+	`
 }
