@@ -4,6 +4,7 @@ import (
 	"atlas/domain"
 	"atlas/domain/entities"
 	"atlas/infrastructure/router"
+	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -50,10 +51,19 @@ func (m moduleCards) Setup(r *mux.Router) *mux.Router {
 func (m moduleCards) listAllCards(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	err := m.useCase.ListAllCards(ctx)
+	list, err := m.useCase.ListAllCards(ctx)
 	if err != nil {
 		log.Printf("Error in [ListAllCards]: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	response, err := json.Marshal(list)
+	if err != nil {
+		log.Printf("Error in [ListAllCards]: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	_, _ = w.Write(response)
 }

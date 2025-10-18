@@ -1,6 +1,7 @@
 package datastore
 
 import (
+	"atlas/domain/entities"
 	"atlas/util"
 	"context"
 	"database/sql"
@@ -21,5 +22,5 @@ type CardsRepository interface {
 	// ListAllCards function to list all available cards
 	ListAllCards(
 		ctx context.Context,
-	) error
+	) ([]entities.FestivalCards, error)
 }

@@ -24,6 +24,6 @@ func NewCardsUseCase(
 
 func (c cardsUseCase) ListAllCards(
 	ctx context.Context,
-) error {
+) ([]entities.FestivalCards, error) {
 	return c.repository.ListAllCards(ctx)
 }

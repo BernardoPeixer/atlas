@@ -57,7 +57,7 @@ func (s *repositorySettings) OpenConnection() {
 		log.Printf("Error openning the database connection [%s] | [%v]", source, err)
 		panic(err)
 	}
-
+	
 	connection.SetMaxOpenConns(20)
 	connection.SetConnMaxLifetime(20 * time.Minute)
 	connection.SetConnMaxIdleTime(20 * time.Minute)

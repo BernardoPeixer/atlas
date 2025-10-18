@@ -10,6 +10,7 @@ require (
 	github.com/gorilla/handlers v1.5.2
 	github.com/gorilla/mux v1.8.1
 	github.com/kardianos/service v1.2.4
+	github.com/shopspring/decimal v1.4.0
 )
 
 require (

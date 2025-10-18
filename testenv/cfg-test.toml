@@ -3,8 +3,8 @@ port = 8182
 log_dir = "C://logs"
 
 [MySQL]
-db_host = "localhost"
-db_port = 3306
+db_host = "switchback.proxy.rlwy.net"
+db_port = 42176
 db_name = "fest_chain"
 db_user = "root"
 db_password = "LoUutpGwRgMIHRjXQqMKvFAHDEJUxMnM"

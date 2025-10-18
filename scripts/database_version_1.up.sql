@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS cryptos
 (
-    id          INTEGER                            NOT NULL primary key,
+    id          INTEGER                            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     symbol      VARCHAR(10)                        NOT NULL,
     name        VARCHAR(100)                       NOT NULL,
     status_code TINYINT  DEFAULT 0                 NOT NULL,
