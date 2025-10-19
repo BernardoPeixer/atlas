@@ -40,6 +40,9 @@ func (c cardRepository) ListAllCards(
 	       u.id,
 	       u.username,
 	       u.wallet_address,
+	       u.status_code,
+	       u.created_at,
+	       u.modified_at,
 	       c.id,
 	       c.name,
 	       c.symbol,
@@ -48,8 +51,8 @@ func (c cardRepository) ListAllCards(
 	       c.modified_at
 	FROM festival_cards fc
 	    INNER JOIN cryptos c ON c.id = fc.id_crypto_type 
-	    INNER JOIN user u ON u.id = fc.id_user
-	WHERE fc.status_code != 2
+	    INNER JOIN user u ON u.id = fc.id_user 
+	ORDER BY fc.created_at, fc.status_code
 	`
 
 	rows, err := c.conn().QueryContext(ctx, query)
@@ -71,6 +74,9 @@ func (c cardRepository) ListAllCards(
 			&festivalCard.UserInfo.ID,
 			&festivalCard.UserInfo.Username,
 			&festivalCard.UserInfo.WalletAddress,
+			&festivalCard.UserInfo.StatusCode,
+			&festivalCard.UserInfo.CreatedAt,
+			&festivalCard.UserInfo.ModifiedAt,
 			&festivalCard.CryptoType.ID,
 			&festivalCard.CryptoType.Name,
 			&festivalCard.CryptoType.Symbol,
