@@ -24,6 +24,20 @@ func NewCardsUseCase(
 
 func (c cardsUseCase) ListAllCards(
 	ctx context.Context,
-) ([]entities.FestivalCards, error) {
+) ([]entities.FestivalCard, error) {
 	return c.repository.ListAllCards(ctx)
+}
+
+func (c cardsUseCase) ListAllCryptoType(
+	ctx context.Context,
+) ([]entities.CryptoType, error) {
+	return c.repository.ListAllCryptoType(ctx)
+}
+
+func (c cardsUseCase) RegisterCard(
+	ctx context.Context,
+	festivalCard entities.FestivalCard,
+) error {
+	// TODO: Validate user wallet to register card
+	return c.repository.RegisterCard(ctx, festivalCard)
 }

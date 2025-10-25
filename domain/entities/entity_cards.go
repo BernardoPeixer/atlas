@@ -5,9 +5,9 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// FestivalCards represents a festival card owned by a user.
+// FestivalCard represents a festival card owned by a user.
 // It includes references to the user, crypto information, pricing, and timestamps.
-type FestivalCards struct {
+type FestivalCard struct {
 	// ID is the unique identifier of the festival card
 	ID int64 `json:"id"`
 

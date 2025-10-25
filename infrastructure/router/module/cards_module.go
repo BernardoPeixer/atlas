@@ -6,6 +6,7 @@ import (
 	"atlas/infrastructure/router"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"io"
 	"log"
 	"net/http"
 )
@@ -39,6 +40,18 @@ func (m moduleCards) Setup(r *mux.Router) *mux.Router {
 			Label:   "List all cards",
 			Methods: []string{http.MethodGet},
 		},
+		{
+			Handler: m.listAllCryptoType,
+			Path:    "/cryptoType/list",
+			Label:   "List all crypto type",
+			Methods: []string{http.MethodGet},
+		},
+		{
+			Handler: m.registerCard,
+			Path:    "/register",
+			Label:   "Register a card",
+			Methods: []string{http.MethodPost},
+		},
 	}
 
 	for _, h := range handlers {
@@ -60,10 +73,56 @@ func (m moduleCards) listAllCards(w http.ResponseWriter, r *http.Request) {
 
 	response, err := json.Marshal(list)
 	if err != nil {
-		log.Printf("Error in [ListAllCards]: %v", err)
+		log.Printf("Error in [Marshal]: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	_, _ = w.Write(response)
+}
+
+func (m moduleCards) listAllCryptoType(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	list, err := m.useCase.ListAllCryptoType(ctx)
+	if err != nil {
+		log.Printf("Error in [ListAllCryptoType]: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response, err := json.Marshal(list)
+	if err != nil {
+		log.Printf("Error in [Marshal]: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	_, _ = w.Write(response)
+}
+
+func (m moduleCards) registerCard(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Printf("Error in [ReadAll]: %v", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var festivalCard entities.FestivalCard
+	err = json.Unmarshal(body, &festivalCard)
+	if err != nil {
+		log.Printf("Error in [Unmarshal]: %v", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = m.useCase.RegisterCard(ctx, festivalCard)
+	if err != nil {
+		log.Printf("Error in [RegisterCard]: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
