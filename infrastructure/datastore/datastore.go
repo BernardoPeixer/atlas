@@ -43,6 +43,13 @@ type CardsRepository interface {
 		ctx context.Context,
 		festivalCard entities.FestivalCard,
 	) error
+
+	// FinishTransactionCard finalizes a transaction for the specified card ID.
+	// Returns an error if the operation fails.
+	FinishTransactionCard(
+		ctx context.Context,
+		cardID int64,
+	) error
 }
 
 // UserRepository defines the interface for user-related persistence operations.

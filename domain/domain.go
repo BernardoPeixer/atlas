@@ -23,6 +23,13 @@ type CardsUseCase interface {
 		ctx context.Context,
 		festivalCard entities.FestivalCard,
 	) error
+
+	// FinishTransactionCard handles the business logic to finalize a transaction for a given card.
+	// Receives the request context and the card ID, and returns an error if the operation fails.
+	FinishTransactionCard(
+		ctx context.Context,
+		cardID int64,
+	) error
 }
 
 // UserUseCase defines the interface for user-related business logic.

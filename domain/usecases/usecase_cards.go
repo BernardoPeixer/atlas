@@ -41,3 +41,10 @@ func (c cardsUseCase) RegisterCard(
 	// TODO: Validate user wallet to register card
 	return c.repository.RegisterCard(ctx, festivalCard)
 }
+
+func (c cardsUseCase) FinishTransactionCard(
+	ctx context.Context,
+	cardID int64,
+) error {
+	return c.repository.FinishTransactionCard(ctx, cardID)
+}

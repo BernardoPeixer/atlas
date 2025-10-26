@@ -161,3 +161,23 @@ func (c cardRepository) RegisterCard(
 
 	return nil
 }
+
+func (c cardRepository) FinishTransactionCard(
+	ctx context.Context,
+	cardID int64,
+) error {
+	// language=sql
+	query := `
+	UPDATE festival_cards 
+	SET status_code = 2,
+	    sold_at = CURRENT_TIMESTAMP
+	WHERE id = ?
+	`
+
+	_, err := c.conn().ExecContext(ctx, query, cardID)
+	if err != nil {
+		return fmt.Errorf("error in execContext (query): %v", err)
+	}
+
+	return nil
+}

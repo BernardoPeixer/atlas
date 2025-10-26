@@ -9,6 +9,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 type moduleCards struct {
@@ -50,6 +51,12 @@ func (m moduleCards) Setup(r *mux.Router) *mux.Router {
 			Handler: m.registerCard,
 			Path:    "/register",
 			Label:   "Register a card",
+			Methods: []string{http.MethodPost},
+		},
+		{
+			Handler: m.finishTransactionCard,
+			Path:    "/finish/{cardID}",
+			Label:   "Finalizes a transaction for the specified card ID.",
 			Methods: []string{http.MethodPost},
 		},
 	}
@@ -122,6 +129,27 @@ func (m moduleCards) registerCard(w http.ResponseWriter, r *http.Request) {
 	err = m.useCase.RegisterCard(ctx, festivalCard)
 	if err != nil {
 		log.Printf("Error in [RegisterCard]: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func (m moduleCards) finishTransactionCard(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	vars := mux.Vars(r)
+
+	cardIDString := vars["cardID"]
+	cardID, err := strconv.Atoi(cardIDString)
+	if err != nil {
+		log.Printf("Error in [Atoi]: %v", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = m.useCase.FinishTransactionCard(ctx, int64(cardID))
+	if err != nil {
+		log.Printf("Error in [FinishTransactionCard]: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
