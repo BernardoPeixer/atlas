@@ -34,4 +34,11 @@ type UserUseCase interface {
 		ctx context.Context,
 		user entities.UserInfo,
 	) error
+
+	// CheckUser validates if a user exists for the given wallet address.
+	// Returns true if found, otherwise false, and an error if the validation fails.
+	CheckUser(
+		ctx context.Context,
+		walletAddress string,
+	) (bool, error)
 }

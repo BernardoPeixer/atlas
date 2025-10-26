@@ -40,3 +40,23 @@ func (u userRepository) RegisterUser(
 
 	return nil
 }
+
+func (u userRepository) CheckUser(
+	ctx context.Context,
+	walletAddress string,
+) (bool, error) {
+	// language=sql
+	query := `
+	SELECT COUNT(id) 
+	FROM user
+	WHERE wallet_address = ?
+	`
+
+	var count int64
+	err := u.conn().QueryRowContext(ctx, query, walletAddress).Scan(&count)
+	if err != nil {
+		return false, fmt.Errorf("error in queryRowContext (query): %v", err)
+	}
+
+	return count > 0, nil
+}

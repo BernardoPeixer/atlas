@@ -54,4 +54,11 @@ type UserRepository interface {
 		ctx context.Context,
 		user entities.UserInfo,
 	) error
+
+	// CheckUser verifies whether a user exists based on the provided wallet address.
+	// Returns true if the user exists, or false otherwise, along with an error if the check fails.
+	CheckUser(
+		ctx context.Context,
+		walletAddress string,
+	) (bool, error)
 }

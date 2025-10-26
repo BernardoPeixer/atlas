@@ -20,14 +20,28 @@ func SetupModules(r *mux.Router, cfg entities.Config) func() error {
 	// Settings repository
 	settings := datastore.NewRepositorySettings(cfg)
 
+	// =============================== REPOSITORIES ===============================
 	// Cards repository
 	cardsRepository := repository.NewCardsRepository(settings, cfg)
+
+	// User repository
+	userRepository := repository.NewUserRepository(settings, cfg)
+
+	// ================================ USE CASES ==================================
 
 	// Cards use case
 	cardsUseCase := usecases.NewCardsUseCase(cardsRepository, cfg)
 
-	// Cards m
+	// User use case
+	userUseCase := usecases.NewUserUseCase(userRepository, cfg)
+
+	// ================================= MODULES ====================================
+
+	// Cards module
 	cardsModule := module.NewModuleCards(cardsUseCase, cfg)
+
+	// User module
+	userModule := module.NewModuleUser(userUseCase, cfg)
 
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -49,6 +63,7 @@ func SetupModules(r *mux.Router, cfg entities.Config) func() error {
 
 	modules := []router.Module{
 		cardsModule,
+		userModule,
 	}
 
 	mainRouter := r.PathPrefix("/api").Subrouter()
